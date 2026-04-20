@@ -189,9 +189,18 @@ $(document).ready(function (){
 				console.log('Adding product to cart...')
 			},
 			success: function(response){
+				let originalHtml = this_val.html();
 				this_val.html('<i class="fa fa-check"></i>')
 				console.log('Added product to cart.')
 				$('.cart-items-count').text(response.totalcartitems)
+				if (response.warning) {
+					setTimeout(function(){
+						alert(response.warning);
+					}, 100);
+				}
+				setTimeout(function(){
+					this_val.html(originalHtml);
+				}, 2000);
 			},
 		})
 	})
@@ -220,13 +229,78 @@ $(document).ready(function (){
 		})
 	})
 
-	// Update products
+	let updateCartTimer;
 
+	function updateCartTotalsAndBackend(product_id, qty, row) {
+		// Update item total locally
+		let priceStr = row.find('.shoping__cart__price').text().replace('$', '').trim();
+		let price = parseFloat(priceStr);
+		if (!isNaN(price) && !isNaN(qty)) {
+			let itemTotal = price * qty;
+			row.find('.shoping__cart__total').text('$' + itemTotal.toFixed(2));
+		}
+
+		// Update overall cart total locally
+		let total = 0;
+		$('.shoping__cart__total').each(function(){
+			let t = parseFloat($(this).text().replace('$', '').trim());
+			if (!isNaN(t)) total += t;
+		});
+		$('.shoping__checkout ul li span').text('$' + total.toFixed(2));
+
+		// Debounce backend update to avoid race conditions and massive spam
+		clearTimeout(updateCartTimer);
+		updateCartTimer = setTimeout(function(){
+			$.ajax({
+				url: '/update-cart',
+				data: {
+					'id': product_id,
+					'qty': qty,
+				},
+				dataType: 'json',
+				success: function(response){
+					// We intentionally do not replace `#cart-list` with `response.data` here
+					// Because doing so would lose input focus and reset UI elements while the user is rapidly clicking.
+					// The cart totals and info are already updated locally and are visually correct.
+				}
+			});
+		}, 500);
+	}
+
+	// Update products on clicking plus/minus
+	$(document).on('click', '.qtybtn', function(){
+		let _this = $(this);
+		let input = _this.siblings('input');
+		let qty = parseInt(input.val());
+		let row = _this.closest('tr');
+		// Determine if we are in cart page by checking for the update/delete product buttons
+		let updateBtn = row.find('.update-product, .delete-product');
+
+		if (updateBtn.length) {
+			let product_id = updateBtn.attr("data-product");
+			updateCartTotalsAndBackend(product_id, qty, row);
+		}
+	});
+
+	// Update products on manually changing input value
+	$(document).on('keyup change', '.shoping__cart__quantity input[type="text"]', function(){
+		let input = $(this);
+		let qty = parseInt(input.val());
+		if (isNaN(qty) || qty < 0) return;
+		let row = input.closest('tr');
+		let updateBtn = row.find('.update-product, .delete-product');
+
+		if (updateBtn.length) {
+			let product_id = updateBtn.attr("data-product");
+			updateCartTotalsAndBackend(product_id, qty, row);
+		}
+	});
+
+	// Legacy manual update button logic (left intact roughly for compatibility, but skipping html replace)
 	$(document).on('click', '.update-product', function(){
-
-		let product_id = $(this).attr("data-product")
-		let this_val = $(this)
-		let product_quantity = $('.product-qty-' + product_id).val()
+		let product_id = $(this).attr("data-product");
+		let this_val = $(this);
+		let product_quantity = $('.product-qty-' + product_id).val();
 
 		$.ajax({
 			url: '/update-cart',
@@ -236,14 +310,17 @@ $(document).ready(function (){
 			},
 			dataType: 'json',
 			beforeSend: function(){
-				this_val.hide()
+				this_val.hide();
 			},
 			success: function(response){
-				this_val.show()
-				$('#cart-list').html(response.data)
+				this_val.show();
+				// Again, skipping `.html(response.data)` to not reset interactions, 
+				// but triggering local calculation just in case.
+				let row = this_val.closest('tr');
+				updateCartTotalsAndBackend(product_id, product_quantity, row);
 			}
-		})
-	})
+		});
+	});
 
 	$(document).on('click', '.add-to-wishlist', function(){
 		let product_id = $(this).attr('data-product-item')
@@ -260,10 +337,13 @@ $(document).ready(function (){
 			},
 			success: function(response){
 				if (response.bool === true) {
-					this_val.html('<i class="fa fa-check"></i>')
+					this_val.html('<span class="icon_heart"></span>')
 					console.log('Added product to wishlist.')
-					$('.wishlist-items-count').text(response.wishlist_count)
+				} else {
+					this_val.html('<span class="icon_heart_alt"></span>')
+					console.log('Removed product from wishlist.')
 				}
+				$('.wishlist-items-count').text(response.wishlist_count)
 			}
 		})
 	})
@@ -317,11 +397,18 @@ $(document).ready(function (){
 	})
 })
 
-// Delete symbols from cart quantity
+// Delete symbols from cart quantity & Restrict max stock
 
 $(document).on('input', '.shoping__cart__quantity input[type="text"], .product__details__quantity input[type="text"]', function() {
     var value = $(this).val();
     var cleanedValue = value.replace(/[^\d]/g, '');
+
+    var maxStock = $(this).data('max');
+    if (cleanedValue !== '' && maxStock !== undefined && parseInt(cleanedValue) > parseInt(maxStock)) {
+        alert("You can't add more than the available stock (" + maxStock + ")!");
+        cleanedValue = maxStock;
+    }
+
     $(this).val(cleanedValue);
 });
 

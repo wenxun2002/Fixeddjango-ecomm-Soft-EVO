@@ -81,7 +81,7 @@
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1" class="product-quantity-{{ product.id }}">
+                                <input type="text" value="1" class="product-quantity-{{ product.id }}" data-max="{{ product.stock_count }}">
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                     <input type="hidden" value="{{ product.image.url }}" class="product-image-{{ product.id }}">
                     <input type="hidden" value="{{ product.id }}" class="product-id-{{ product.id }}">
                     <input type="hidden" value="{{ product.title }}" class="product-title-{{ product.id }}">
-                    <button class="primary-btn add-to-cart-btn" data-index="{{ product.id }}">ADD TO CARD</button>
+                    <button class="primary-btn add-to-cart-btn" data-index="{{ product.id }}">ADD TO CART</button>
                     {% else %}
                     <button style="opacity: 0.5; cursor: not-allowed;" class="primary-btn add-to-cart-btn" disabled>OUT OF STOCK</button>
                     {% endif %}

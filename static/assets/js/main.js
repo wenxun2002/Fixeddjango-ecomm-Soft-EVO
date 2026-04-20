@@ -203,22 +203,71 @@
 		Quantity change
 	--------------------- */
     var proQty = $('.pro-qty');
-    proQty.prepend('<span class="dec qtybtn">-</span>');
-    proQty.append('<span class="inc qtybtn">+</span>');
+    proQty.each(function() {
+        var $this = $(this);
+        var inCart = $this.closest('#cart-list, .shoping-cart, .shoping__cart__table').length > 0;
+        var inputVal = parseInt($this.find('input').val());
+        
+        var decIcon = '-';
+        if (inCart && inputVal <= 1) {
+            decIcon = '<i class="fa fa-trash"></i>';
+        }
+        var $decBtn = $('<span class="dec qtybtn">' + decIcon + '</span>');
+        if (!inCart && inputVal <= 1) {
+            $decBtn.css('visibility', 'hidden');
+        }
+        $this.prepend($decBtn);
+        $this.append('<span class="inc qtybtn">+</span>');
+
+        $this.find('input').on('keyup change', function() {
+            var val = parseInt($(this).val());
+            if (!inCart) {
+                if (val <= 1) {
+                    $decBtn.css('visibility', 'hidden');
+                } else {
+                    $decBtn.css('visibility', 'visible');
+                }
+            }
+        });
+    });
+
     proQty.on('click', '.qtybtn', function () {
         var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
+        var $input = $button.parent().find('input');
+        var oldValue = parseInt($input.val());
+        var maxStock = $input.data('max');
+        var inCart = $button.closest('#cart-list, .shoping-cart, .shoping__cart__table').length > 0;
+
         if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
+            var newVal = oldValue + 1;
+            if (maxStock !== undefined && maxStock !== '' && newVal > parseInt(maxStock)) {
+                alert("You can't add more than the available stock (" + maxStock + ")!");
+                newVal = parseInt(maxStock);
+            }
+            $input.val(newVal).trigger('change');
+            if (inCart && newVal > 1) {
+                $button.siblings('.dec').html('-').css('visibility', 'visible');
+            } else if (!inCart && newVal > 1) {
+                $button.siblings('.dec').css('visibility', 'visible');
+            }
         } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
+            if (inCart && oldValue <= 1) {
+                var $deleteBtn = $button.closest('tr').find('.delete-product');
+                if ($deleteBtn.length) {
+                    $deleteBtn.click();
+                }
+                return;
+            }
+            if (oldValue > 1) {
+                var newVal = oldValue - 1;
+                $input.val(newVal).trigger('change');
+                if (inCart && newVal <= 1) {
+                    $button.html('<i class="fa fa-trash"></i>').css('visibility', 'visible');
+                } else if (!inCart && newVal <= 1) {
+                    $button.css('visibility', 'hidden');
+                }
             }
         }
-        $button.parent().find('input').val(newVal);
     });
 
 })(jQuery);

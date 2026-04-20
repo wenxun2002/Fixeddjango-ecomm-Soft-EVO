@@ -23,7 +23,7 @@
 	                                        <img src="{{ w.product.image.url }}" alt="" class="mCS_img_loaded">
 	                                    </div>
 	                                    <div class="name-product">
-	                                        {{w.product.title|truncatechars:25}}
+	                                        <a href="{% url 'core:products-detail' w.product.pid %}" style="color: inherit;">{{w.product.title|truncatechars:25}}</a>
 	                                    </div>
                                     </div>
                                 </td>

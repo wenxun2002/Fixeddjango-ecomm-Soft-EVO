@@ -61,4 +61,7 @@ urlpatterns = [
 
 	# About Us
 	path('about/', views.about, name='about'),
+	
+	# Subscribe Newsletter
+	path('subscribe/', views.subscribe_newsletter, name='subscribe_newsletter'),
 ]

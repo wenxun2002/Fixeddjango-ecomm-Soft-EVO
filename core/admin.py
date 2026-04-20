@@ -7,13 +7,19 @@ class ProductImagesAdmin(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
 	inlines = [ProductImagesAdmin]
-	list_display = ['user', 'title', 'product_image', 'price','category', 'vendor', 'featured', 'product_status', 'pid']
+	list_display = ['title', 'product_image', 'price','category', 'vendor', 'featured', 'product_status', 'pid', 'user']
+	readonly_fields = ['pid']
+	fields = ['pid', 'user', 'title', 'category', 'vendor', 'image', 'description', 'price', 'old_price', 'specifications', 'product_status', 'featured']
 
 class CategotyAdmin(admin.ModelAdmin):
 	list_display = ['title', 'category_image', 'cid']
+	readonly_fields = ['cid']
+	fields = ['cid', 'title']	
 
 class VendorAdmin(admin.ModelAdmin):
 	list_display = ['title', 'vendor_image', 'vid']
+	readonly_fields = ['vid']
+	fields = ['vid', 'title']
 
 # class CartOrderAdmin(admin.ModelAdmin):
 # 	list_display = ['user', 'price', 'paid_status', 'order_date', 'product_status']
@@ -23,9 +29,13 @@ class VendorAdmin(admin.ModelAdmin):
 
 class ProductReviewAdmin(admin.ModelAdmin):
 	list_display = ['user', 'product', 'rating']
+	readonly_fields = ['user', 'product', 'rating', 'review']
+	fields = ['user', 'product', 'rating', 'review']
 
 class WishlistAdmin(admin.ModelAdmin):
 	list_display = ['user', 'product', 'date']
+	readonly_fields = ['user', 'product']
+	fields = ['user', 'product']
 
 # class AddressAdmin(admin.ModelAdmin):
 # 	list_display = ['user', 'address', 'status']

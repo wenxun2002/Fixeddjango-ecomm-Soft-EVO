@@ -5,7 +5,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Valleys is Full-Stack Django ecommerce website. Source code: https://github.com/kolosochok/django-ecommerce.">
+    <meta name="description"
+        content="Valleys is Full-Stack Django ecommerce website. Source code: https://github.com/kolosochok/django-ecommerce.">
     <meta name="keywords" content="Valleys, Django, Creative, Ecommerce, Online-shop">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static './assets/img/favicon.ico' %}" type="image/x-icon">
@@ -46,11 +47,14 @@
         <div class="humberger__menu__cart">
             <ul>
                 {% if wishlist %}
-                <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span class="wishlist-items-count">{{ wishlist.count }}</span></a></li>
+                <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span
+                            class="wishlist-items-count">{{ wishlist.count }}</span></a></li>
                 {% else %}
-                <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span class="wishlist-items-count">0</span></a></li>
+                <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span
+                            class="wishlist-items-count">0</span></a></li>
                 {% endif %}
-                <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span class="cart-items-count">{{ request.session.cart_data_object|length }}</span></a></li>
+                <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span class="cart-items-count">{{
+                            request.session.cart_data_object|length }}</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>${{ cart_total_amount|floatformat:2 }}</span></div>
         </div>
@@ -71,12 +75,12 @@
                 <ul>
                     <li><a href="{% url 'userauths:account' %}">My Account</a></li>
                     <li><a href="{% url 'core:wishlist' %}">My Wishlist</a></li>
-                    <li><a href="{% url 'userauths:sing-out' %}"><i class="fa fa-sign-out"></i>Sing out</a></li>
+                    <li><a href="{% url 'userauths:sing-out' %}"><i class="fa fa-sign-out"></i>Sign out</a></li>
                 </ul>
             </div>
             {% else %}
             <div style="margin-left: 15px;" class="header__top__right__auth">
-                <a href="{% url 'userauths:sing-in' %}"><i class="fa fa-user"></i>Sing in</a>
+                <a href="{% url 'userauths:sing-in' %}"><i class="fa fa-user"></i>Sign in</a>
             </div>
             {% endif %}
         </div>
@@ -152,12 +156,13 @@
                                 <ul>
                                     <li><a href="{% url 'userauths:account' %}">My Account</a></li>
                                     <li><a href="{% url 'core:wishlist' %}">My Wishlist</a></li>
-                                    <li><a href="{% url 'userauths:sing-out' %}"><i class="fa fa-sign-out"></i>Sing out</a></li>
+                                    <li><a href="{% url 'userauths:sing-out' %}"><i class="fa fa-sign-out"></i>Sign
+                                            out</a></li>
                                 </ul>
                             </div>
                             {% else %}
                             <div class="header__top__right__auth">
-                                <a href="{% url 'userauths:sing-in' %}"><i class="fa fa-sign-in"></i>Sing in</a>
+                                <a href="{% url 'userauths:sing-in' %}"><i class="fa fa-sign-in"></i>Sign in</a>
                             </div>
                             {% endif %}
                         </div>
@@ -175,16 +180,20 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="{% if request.path == '/' %}active{% endif %}"><a href="{% url 'core:index' %}">Home</a></li>
-                            <li class="{% if request.path == '/products/' or request.path == '/category/' or request.path == '/vendors/' %}active{% endif %}"><a href="{% url 'core:products-list' %}">Shop</a>
+                            <li class="{% if request.path == '/' %}active{% endif %}"><a
+                                    href="{% url 'core:index' %}">Home</a></li>
+                            <li
+                                class="{% if request.path == '/products/' or request.path == '/category/' or request.path == '/vendors/' %}active{% endif %}">
+                                <a href="{% url 'core:products-list' %}">Shop</a>
                                 <ul class="header__menu__dropdown">
                                     <li class="submenu">
                                         <a href="{% url 'core:category-list' %}">Categories</a>
                                         <ul class="header__submenu">
                                             {% for c in categories %}
-                                            <li><a href="{% url 'core:category-product-list' c.cid %}">{{ c.title }}</a></li>
+                                            <li><a href="{% url 'core:category-product-list' c.cid %}">{{ c.title }}</a>
+                                            </li>
                                             {% endfor %}
-                                         </ul>   
+                                        </ul>
                                     </li>
                                     <li class="submenu">
                                         <a href="{% url 'core:vendor-list' %}">Vendors</a>
@@ -192,18 +201,21 @@
                                             {% for v in vendors %}
                                             <li><a href="{% url 'core:vendor-detail' v.vid %}">{{ v.title }}</a></li>
                                             {% endfor %}
-                                         </ul>   
+                                        </ul>
                                     </li>
-                                    <li><a href="{% url 'core:products-list' %}">Products</a></li>       
+                                    <li><a href="{% url 'core:products-list' %}">Products</a></li>
                                 </ul>
                             </li>
-                            <li class="{% if request.path == '/about/' %}active{% endif %}"><a href="{% url 'core:about' %}">Pages</a>
+                            <li class="{% if request.path == '/about/' %}active{% endif %}"><a
+                                    href="{% url 'core:about' %}">Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="{% url 'core:about' %}">About Us</a></li> 
+                                    <li><a href="{% url 'core:about' %}">About Us</a></li>
                                 </ul>
                             </li>
-                            <li class="{% if request.path == '/blog/' %}active{% endif %}"><a href="{% url 'blog:blog' %}">Blog</a></li>
-                            <li class="{% if request.path == '/contact/' %}active{% endif %}"><a href="{% url 'core:contact' %}">Contact</a></li>
+                            <li class="{% if request.path == '/blog/' %}active{% endif %}"><a
+                                    href="{% url 'blog:blog' %}">Blog</a></li>
+                            <li class="{% if request.path == '/contact/' %}active{% endif %}"><a
+                                    href="{% url 'core:contact' %}">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -211,11 +223,15 @@
                     <div class="header__cart">
                         <ul>
                             {% if wishlist %}
-                            <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span class="wishlist-items-count">{{ wishlist.count }}</span></a></li>
+                            <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span
+                                        class="wishlist-items-count">{{ wishlist.count }}</span></a></li>
                             {% else %}
-                            <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span class="wishlist-items-count">0</span></a></li>
+                            <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span
+                                        class="wishlist-items-count">0</span></a></li>
                             {% endif %}
-                            <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span class="cart-items-count">{{ request.session.cart_data_object|length }}</span></a></li>
+                            <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span
+                                        class="cart-items-count">{{ request.session.cart_data_object|length
+                                        }}</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>${{ cart_total_amount|floatformat:2 }}</span></div>
                     </div>
@@ -229,7 +245,7 @@
     <!-- Header Section End -->
 
     {% block content %}
-    
+
     {% endblock content %}
 
     <!-- Footer Section Begin -->
@@ -273,8 +289,22 @@
                     <div class="footer__widget">
                         <h6>Join Our Newsletter Now</h6>
                         <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your mail">
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if 'subscribe_success' in message.tags %}
+                        <div style="color: #7fad39; margin-bottom: 10px; font-size: 14px; font-weight: bold;">
+                            {{ message.message }}
+                        </div>
+                        {% elif 'subscribe_error' in message.tags %}
+                        <div style="color: #e53637; margin-bottom: 10px; font-size: 14px; font-weight: bold;">
+                            {{ message.message }}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        <form action="{% url 'core:subscribe_newsletter' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="email" name="email" placeholder="Enter your mail" required>
                             <button type="submit" class="site-btn">Subscribe</button>
                         </form>
                         <div class="footer__widget__social">
@@ -289,10 +319,17 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="{% static './assets/img/payment-item.png' %}" alt=""></div>
+                        <div class="footer__copyright__text">
+                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This
+                                template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                        <div class="footer__copyright__payment"><img src="{% static './assets/img/payment-item.png' %}"
+                                alt=""></div>
                     </div>
                 </div>
             </div>
