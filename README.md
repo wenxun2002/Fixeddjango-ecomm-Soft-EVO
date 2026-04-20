@@ -1,6 +1,7 @@
 # Django Full Stack E-Commerce Application
 
 This project is a comprehensive solution for building and managing a robust e-commerce platform using Python, Django, JavaScript, jQuery, and SQLite.
+Just for learning Software evolution course.
 
 ## Demo💫
 

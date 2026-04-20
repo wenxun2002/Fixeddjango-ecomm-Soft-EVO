@@ -53,8 +53,8 @@
                 <li><a href="{% url 'core:wishlist' %}"><i class="fa fa-heart"></i> <span
                             class="wishlist-items-count">0</span></a></li>
                 {% endif %}
-                <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span class="cart-items-count">{{
-                            request.session.cart_data_object|length }}</span></a></li>
+                <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span
+                            class="cart-items-count">{{ request.session.cart_data_object|length|default:0 }}</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>${{ cart_total_amount|floatformat:2 }}</span></div>
         </div>
@@ -230,8 +230,7 @@
                                         class="wishlist-items-count">0</span></a></li>
                             {% endif %}
                             <li><a href="{% url 'core:cart' %}"><i class="fa fa-shopping-bag"></i> <span
-                                        class="cart-items-count">{{ request.session.cart_data_object|length
-                                        }}</span></a></li>
+                                        class="cart-items-count">{{ request.session.cart_data_object|length|default:0 }}</span></a></li>
                         </ul>
                         <div class="header__cart__price">item: <span>${{ cart_total_amount|floatformat:2 }}</span></div>
                     </div>
