@@ -81,11 +81,14 @@ def product_detail_view(request, pid):
 	review_form = ProductReviewFrom()
 
 	make_review = True
+	in_wishlist = False
 	if request.user.is_authenticated:
 		user_review_count = ProductReview.objects.filter(user=request.user, product=product).count() 
 
 		if user_review_count > 0:
 			make_review = False
+			
+		in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
 
 	context = {
 		'product': product,
@@ -95,6 +98,7 @@ def product_detail_view(request, pid):
 		'average_rating': average_rating,
 		'review_form': review_form,
 		'make_review': make_review,
+		'in_wishlist': in_wishlist,
 	}
 	return render(request, 'core/product-detail.html', context)
 
@@ -234,6 +238,7 @@ def cart_view(request):
 	if 'cart_data_object' in request.session:
 		for product_id, item in request.session['cart_data_object'].items():
 			cart_total_amount += int(item['qty']) * float(item['price'])
+			item['cart_item_total'] = int(item['qty']) * float(item['price'])
 			try:
 				product = Product.objects.get(id=product_id)
 				item['stock_count'] = product.stock_count
@@ -261,6 +266,7 @@ def delete_from_cart(request):
 	if 'cart_data_object' in request.session:
 		for product_id, item in request.session['cart_data_object'].items():
 			cart_total_amount += int(item['qty']) * float(item['price'])
+			item['cart_item_total'] = int(item['qty']) * float(item['price'])
 			try:
 				product = Product.objects.get(id=product_id)
 				item['stock_count'] = product.stock_count
@@ -290,6 +296,7 @@ def update_cart(request):
 	if 'cart_data_object' in request.session:
 		for product_id, item in request.session['cart_data_object'].items():
 			cart_total_amount += int(item['qty']) * float(item['price'])
+			item['cart_item_total'] = int(item['qty']) * float(item['price'])
 			try:
 				product = Product.objects.get(id=product_id)
 				item['stock_count'] = product.stock_count

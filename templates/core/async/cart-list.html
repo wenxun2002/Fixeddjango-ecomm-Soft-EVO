@@ -32,7 +32,7 @@
                                     </div>
                                 </td>
                                 <td class="shoping__cart__total">
-                                    ${% widthratio item.price 1 item.qty %}
+                                    ${{ item.cart_item_total|floatformat:2 }}
                                 </td>
                                 <td class="shoping__cart__item__close">
                                     <button class="update-product" data-product="{{ product_id }}" style="border: none; background: none;"><i class="fa fa-retweet"></i></button>

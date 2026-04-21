@@ -81,7 +81,7 @@
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1" class="product-quantity-{{ product.id }}" data-max="{{ product.stock_count }}">
+                                <input type="text" value="1" class="product-quantity-{{ product.id }}" data-max="{{ product.stock_count }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,13 @@
                     <!-- <a href="" class="primary-btn">ADD TO CARD</a> -->
                     
                     {% if request.user.is_authenticated %}
-                    <button style="border-style: none;" class="heart-icon add-to-wishlist" data-product-item="{{ product.id }}"><span class="icon_heart_alt"></span></button>
+                    <button style="border-style: none;" class="heart-icon add-to-wishlist" data-product-item="{{ product.id }}">
+                        {% if in_wishlist %}
+                        <span class="icon_heart"></span>
+                        {% else %}
+                        <span class="icon_heart_alt"></span>
+                        {% endif %}
+                    </button>
                     {% else %}
                     <a href="{% url 'userauths:sing-in' %}" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     {% endif %}
