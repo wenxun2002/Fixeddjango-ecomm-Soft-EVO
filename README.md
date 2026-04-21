@@ -47,7 +47,7 @@ This project aims to provide a solid foundation to create a feature-rich and sca
 1. Clone and change to the directory:
 
 ```
-git clone https://github.com/kolosochok/django-ecommerce
+git clone https://github.com/wenxun2002/Fixeddjango-ecomm-Soft-EVO.git
 cd django-ecommerce
 ```
 
@@ -62,7 +62,10 @@ source env/bin/activate
 Windows:
 ```
 python -m venv env
-source env/Scripts/activate
+```
+
+```
+env/Scripts/activate
 ```
 
 3. Install Python requirements:
