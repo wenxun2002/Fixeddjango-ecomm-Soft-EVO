@@ -165,6 +165,14 @@ $(document).ready(function (){
 	$('.add-to-cart-btn').on('click', function(){
 
 		let this_val = $(this)
+		
+		// 解决场景B并发问题：如果在请求中（或者两秒动画内），禁用按钮防止连点
+		if (this_val.prop('disabled')) {
+			return false;
+		}
+		this_val.prop('disabled', true);
+		this_val.css('pointer-events', 'none');
+
 		let index = this_val.attr('data-index')
 
 		let quantity = $('.product-quantity-' + index).val()
@@ -200,8 +208,16 @@ $(document).ready(function (){
 				}
 				setTimeout(function(){
 					this_val.html(originalHtml);
+					// 恢复按钮可点击状态
+					this_val.prop('disabled', false);
+					this_val.css('pointer-events', 'auto');
 				}, 2000);
 			},
+			error: function(){
+				// 请求失败时也要恢复按钮
+				this_val.prop('disabled', false);
+				this_val.css('pointer-events', 'auto');
+			}
 		})
 	})
 
