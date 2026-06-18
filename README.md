@@ -1,4 +1,7 @@
-# Django Full Stack E-Commerce Application
+# Django Full Stack E-Commerce Application for Evolution
+CSE6364 SOFTWARE EVOLUTION & MAINTENANCE
+GitHub Repository: https://github.com/wenxun2002/Fixeddjango-ecomm-Soft-EVO
+
 
 This project is a comprehensive solution for building and managing a robust e-commerce platform using Python, Django, JavaScript, jQuery, and SQLite.
 Just for learning Software evolution course.
